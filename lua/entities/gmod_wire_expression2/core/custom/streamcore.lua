@@ -72,7 +72,7 @@ end
 __e2setcost( 1 )
 e2function void streamDisable3D( disable )
     self.data = self.data or {}
-    self.data.no3d = ( disable != 0 )
+    self.data.no3d = disable ~= 0
 end
 
 __e2setcost( 5 )
@@ -128,7 +128,7 @@ e2function void streamVolume( id, volume )
     volume = math.Clamp( volume, 0, 1 )
     local streamtbl = streams[index]
     if not streamtbl then return end
-    if volume != streamtbl[2] then
+    if volume ~= streamtbl[2] then
         streams[index][2] = volume
         net.Start( "XTS_SC_StreamVolume" )
             net.WriteString( index )
@@ -143,7 +143,7 @@ e2function void streamRadius( id, radius )
     radius = math.Clamp( radius, 0, maxradius )
     local streamtbl = streams[index]
     if not streamtbl then return end
-    if radius != streamtbl[3] then
+    if radius ~= streamtbl[3] then
         streams[index][3] = radius
         net.Start( "XTS_SC_StreamRadius" )
             net.WriteString( index )
