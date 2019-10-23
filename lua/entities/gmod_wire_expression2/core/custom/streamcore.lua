@@ -17,8 +17,8 @@ local antispam = {}
 local function fixURL( str )
     local url = string.Trim( str )
     if string.len( url ) < 5 then return end
-    if string.sub( url, 1, 4 ) != "http" then
-        url = "http://" .. url
+    if string.sub( url, 1, 4 ) ~= "http" then
+        url = "https://" .. url
     end
     return url
 end
