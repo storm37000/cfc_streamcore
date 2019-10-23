@@ -40,23 +40,23 @@ local function streamStart( from, ent, id, volume, str, no3d )
     if not IsValid( from ) then return end
     if not IsValid( ent ) then return end
     if not E2Lib.isOwner( from, ent ) then return end
-    
+
     local owner = E2Lib.getOwner( from, ent )
     if not streamCanStart( owner ) then return end
-    
+
     local secs = GetConVarNumber( "streamcore_antispam_seconds" )
     antispam[owner:EntIndex()] = CurTime() + secs
-    
+
     local index = from:EntIndex() .. "-" .. id
     local url = fixURL( str ) or "nope"
     if url == "nope" then return end
-    
+
     local radius = GetConVarNumber( "streamcore_maxradius" )
     if radius > 120 then radius = 120 end
-    
+
     volume = math.Clamp( volume, 0, 1 )
     streams[index] = {url, volume, radius}
-    
+
     net.Start( "XTS_SC_StreamStart" )
         net.WriteString( index )
         net.WriteFloat( volume )

@@ -67,7 +67,7 @@ net.Receive( "XTS_SC_StreamStart", function( len )
             streams[index] = {
                 station, ent, from, owner,
                 url, no3d, volume, radius
-            }
+
         end
     end )
 end )
