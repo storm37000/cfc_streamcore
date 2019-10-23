@@ -41,7 +41,7 @@ concommand.Add( "streamcore_purge", function()
 end )
 
 net.Receive( "XTS_SC_StreamHelp", function( len )
-    gui.OpenURL( "http://steamcommunity.com/sharedfiles/filedetails/?id = 442653157" )
+    gui.OpenURL( "http://steamcommunity.com/sharedfiles/filedetails/?id=442653157" )
 end )
 
 net.Receive( "XTS_SC_StreamStop", function( len )
