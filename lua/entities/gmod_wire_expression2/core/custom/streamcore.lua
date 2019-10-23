@@ -79,7 +79,7 @@ __e2setcost( 5 )
 e2function string streamHelp()
     net.Start( "XTS_SC_StreamHelp" )
     net.Send( self.player )
-    return "http://steamcommunity.com/sharedfiles/filedetails/?id = 442653157"
+    return "http://steamcommunity.com/sharedfiles/filedetails/?id=442653157"
 end
 
 e2function number streamLimit()
