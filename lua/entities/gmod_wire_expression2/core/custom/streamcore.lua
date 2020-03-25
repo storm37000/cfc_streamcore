@@ -14,41 +14,52 @@ util.AddNetworkString( "XTS_SC_StreamHelp" )
 local streams = {}
 local antispam = {}
 
-local function fixURL( str )
-    local url = string.Trim( str )
+local function fixURL( url )
+    local url = string.Trim( url )
+
     if string.len( url ) < 5 then return end
+
     if string.sub( url, 1, 4 ) ~= "http" then
         url = "https://" .. url
     end
+
     return url
 end
 
-local function streamCanStart( ply )
+local function playerCanStartStream( ply )
     local admin = ply:IsAdmin()
     local only = GetConVarNumber( "streamcore_adminonly" )
     local ignore = GetConVarNumber( "streamcore_antispam_ignoreadmins" )
     local access = ply.SC_Access_Override or false
     local nospam = ply.SC_Antispam_Ignore or false
+
     if ( only > 0 ) and not ( admin or access ) then return false end
+
     if ( ignore > 0 ) and ( admin or nospam ) then return true end
+
     local last = antispam[ply:EntIndex()] or 0
     if last > CurTime() then return false end
+
     return true
 end
 
-local function streamStart( from, ent, id, volume, str, no3d )
+local function streamStart( from, ent, id, volume, url, no3d )
     if not IsValid( from ) then return end
     if not IsValid( ent ) then return end
     if not E2Lib.isOwner( from, ent ) then return end
 
     local owner = E2Lib.getOwner( from, ent )
-    if not streamCanStart( owner ) then return end
+
+    if not playerCanStartStream( owner ) then return end
+
+    local canRun = hook.Run( "StreamCore_PreStreamStart", from, ent, id, volume, url, no3d )
+    if canRun == false then return end
 
     local secs = GetConVarNumber( "streamcore_antispam_seconds" )
     antispam[owner:EntIndex()] = CurTime() + secs
 
     local index = from:EntIndex() .. "-" .. id
-    local url = fixURL( str ) or "nope"
+    local url = fixURL( url ) or "nope"
     if url == "nope" then return end
 
     local radius = GetConVarNumber( "streamcore_maxradius" )
@@ -108,8 +119,8 @@ e2function void entity:streamStart( id, string url )
 end
 
 __e2setcost( 10 )
-e2function number streamCanStart()
-    return streamCanStart( self.player ) and 1 or 0
+e2function number playerCanStartStream()
+    return playerCanStartStream( self.player ) and 1 or 0
 end
 
 e2function void streamStop( id )
