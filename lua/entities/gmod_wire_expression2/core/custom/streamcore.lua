@@ -119,7 +119,7 @@ e2function void entity:streamStart( id, string url )
 end
 
 __e2setcost( 10 )
-e2function number playerCanStartStream()
+e2function number streamCanStart()
     return playerCanStartStream( self.player ) and 1 or 0
 end
 
