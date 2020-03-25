@@ -43,22 +43,22 @@ local function playerCanStartStream( ply )
     return true
 end
 
-local function streamStart( from, ent, id, volume, url, no3d )
-    if not IsValid( from ) then return end
-    if not IsValid( ent ) then return end
-    if not E2Lib.isOwner( from, ent ) then return end
+local function streamStart( chip, target, id, volume, url, no3d )
+    if not IsValid( chip ) then return end
+    if not IsValid( target ) then return end
+    if not E2Lib.isOwner( chip, target ) then return end
 
-    local owner = E2Lib.getOwner( from, ent )
+    local owner = E2Lib.getOwner( chip, target )
 
     if not playerCanStartStream( owner ) then return end
 
-    local canRun = hook.Run( "StreamCore_PreStreamStart", from, ent, id, volume, url, no3d )
+    local canRun = hook.Run( "StreamCore_PreStreamStart", chip, owner, url, id, volume, no3d )
     if canRun == false then return end
 
     local secs = GetConVarNumber( "streamcore_antispam_seconds" )
     antispam[owner:EntIndex()] = CurTime() + secs
 
-    local index = from:EntIndex() .. "-" .. id
+    local index = chip:EntIndex() .. "-" .. id
     local url = fixURL( url ) or "nope"
     if url == "nope" then return end
 
@@ -72,8 +72,8 @@ local function streamStart( from, ent, id, volume, url, no3d )
         net.WriteString( index )
         net.WriteFloat( volume )
         net.WriteString( url )
-        net.WriteEntity( ent )
-        net.WriteEntity( from )
+        net.WriteEntity( target )
+        net.WriteEntity( chip )
         net.WriteEntity( owner )
         net.WriteBool( no3d )
         net.WriteFloat( radius )
