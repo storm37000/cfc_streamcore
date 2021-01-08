@@ -4,6 +4,16 @@ local streams = {}
 
 local streamcoreDisable = CreateClientConVar( "streamcore_disable", 0, true, false, "Disables streamcore." )
 
+hook.Add( "AddToolMenuCategories", "CustomCategory", function()
+    spawnmenu.AddToolCategory( "Options", "CFC", "#CFC" )
+end )
+
+hook.Add( "PopulateToolMenu", "CustomMenuSettings", function()
+    spawnmenu.AddToolMenuOption( "Options", "CFC", "cfc_streamcore", "#Streamcore", "", "", function( panel )
+        panel:CheckBox( "Disable streamcore", "streamcore_disable" )
+    end )
+end )
+
 local function streamStop( index )
     local streamtbl = streams[index] or {}
     local canStop = IsValid( streamtbl[1] )
