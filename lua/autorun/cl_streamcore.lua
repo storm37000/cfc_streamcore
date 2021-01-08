@@ -2,6 +2,8 @@ if SERVER then AddCSLuaFile() return end
 
 local streams = {}
 
+local streamcoreDisable = CreateClientConVar( "streamcore_disable", 0, true, false, "Disables streamcore." )
+
 local function streamStop( index )
     local streamtbl = streams[index] or {}
     local canStop = IsValid( streamtbl[1] )
@@ -49,6 +51,8 @@ net.Receive( "XTS_SC_StreamStop", function( len )
 end )
 
 net.Receive( "XTS_SC_StreamStart", function( len )
+    local isDisabled = streamcoreDisable:GetBool()
+    if isDisabled == true then return end
     local index = net.ReadString()
     local volume = net.ReadFloat()
     local url = net.ReadString()
@@ -61,7 +65,7 @@ net.Receive( "XTS_SC_StreamStart", function( len )
     if not IsValid( from ) then return end
     streamStop( index ) local flag = ""
     if not no3d then flag = "3d" end
-    sound.PlayURL( url, flag, function( station ) 
+    sound.PlayURL( url, flag, function( station )
         if IsValid( station ) then
             station:SetVolume( volume )
             streams[index] = {
@@ -99,8 +103,8 @@ hook.Add( "Think", "XTS_SC_Think", function( ent )
         if IsValid( station ) and IsValid( ent ) and IsValid( from ) then
             if streamtbl[6] then
                 local distance = LocalPlayer():GetPos():Distance( ent:GetPos() )
-                distance = math.Clamp( (distance-streamtbl[8] )/30, 1, 300 )
-                local volume = streamtbl[7]/distance
+                distance = math.Clamp( (distance-streamtbl[8] ) / 30, 1, 300 )
+                local volume = streamtbl[7] / distance
                 if volume < 0.06 then volume = 0 end
                 station:SetVolume( volume )
             else
