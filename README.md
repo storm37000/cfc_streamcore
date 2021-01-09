@@ -5,7 +5,7 @@ With a added toggle functionality
 
 ![alt text](https://i.imgur.com/eeZdDTP.png)
 
-Added convars
+#### Convars
 | Convar | Description | Default |
 | :---: | :---: | :---: |
 | streamcore_disable 0 | Disables streamcore clientside | 0 |
