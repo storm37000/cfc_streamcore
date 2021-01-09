@@ -63,6 +63,7 @@ end )
 net.Receive( "XTS_SC_StreamStart", function( len )
     local isDisabled = streamcoreDisable:GetBool()
     if isDisabled == true then return end
+
     local index = net.ReadString()
     local volume = net.ReadFloat()
     local url = net.ReadString()
@@ -71,6 +72,7 @@ net.Receive( "XTS_SC_StreamStart", function( len )
     local owner = net.ReadEntity()
     local no3d = net.ReadBool()
     local radius = net.ReadFloat()
+
     if not IsValid( ent ) then return end
     if not IsValid( from ) then return end
     streamStop( index ) local flag = ""
@@ -113,7 +115,7 @@ hook.Add( "Think", "XTS_SC_Think", function( ent )
         if IsValid( station ) and IsValid( ent ) and IsValid( from ) then
             if streamtbl[6] then
                 local distance = LocalPlayer():GetPos():Distance( ent:GetPos() )
-                distance = math.Clamp( (distance-streamtbl[8] ) / 30, 1, 300 )
+                distance = math.Clamp( ( distance - streamtbl[8] ) / 30, 1, 300 )
                 local volume = streamtbl[7] / distance
                 if volume < 0.06 then volume = 0 end
                 station:SetVolume( volume )
