@@ -8,7 +8,7 @@ hook.Add( "AddToolMenuCategories", "CFC_Streamcore_AddToolMenuCategories", funct
     spawnmenu.AddToolCategory( "Options", "CFC", "#CFC" )
 end )
 
-hook.Add( "PopulateToolMenu", "CFC_Streamcore_Populatetoolmenu", function()
+hook.Add( "PopulateToolMenu", "CFC_Streamcore_PopulateToolMenu", function()
     spawnmenu.AddToolMenuOption( "Options", "CFC", "cfc_streamcore", "#Streamcore", "", "", function( panel )
         panel:CheckBox( "Disable streamcore", "streamcore_disable" )
     end )
