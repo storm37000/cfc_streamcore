@@ -52,15 +52,15 @@ concommand.Add( "streamcore_purge", function()
     print( "[StreamCore] Purge done." )
 end )
 
-net.Receive( "XTS_SC_StreamHelp", function( len )
+net.Receive( "CFC_SC_StreamHelp", function( len )
     gui.OpenURL( "http://steamcommunity.com/sharedfiles/filedetails/?id=442653157" )
 end )
 
-net.Receive( "XTS_SC_StreamStop", function( len )
+net.Receive( "CFC_SC_StreamStop", function( len )
     streamStop( net.ReadString() )
 end )
 
-net.Receive( "XTS_SC_StreamStart", function( len )
+net.Receive( "CFC_SC_StreamStart", function( len )
     local isDisabled = streamcoreDisable:GetBool()
     if isDisabled == true then return end
 
@@ -88,7 +88,7 @@ net.Receive( "XTS_SC_StreamStart", function( len )
     end )
 end )
 
-net.Receive( "XTS_SC_StreamVolume", function( len )
+net.Receive( "CFC_SC_StreamVolume", function( len )
     local index = net.ReadString()
     local volume = net.ReadFloat()
     local streamtbl = streams[index]
@@ -99,7 +99,7 @@ net.Receive( "XTS_SC_StreamVolume", function( len )
     end
 end )
 
-net.Receive( "XTS_SC_StreamRadius", function( len )
+net.Receive( "CFC_SC_StreamRadius", function( len )
     local index = net.ReadString()
     local radius = net.ReadFloat()
     local streamtbl = streams[index]
@@ -107,11 +107,12 @@ net.Receive( "XTS_SC_StreamRadius", function( len )
     streams[index][8] = radius
 end )
 
-hook.Add( "Think", "XTS_SC_Think", function( ent )
+timer.Create( "CFC_SC_Think", 1, 0, function()
     for index, streamtbl in pairs( streams ) do
         local station = streamtbl[1]
         local ent = streamtbl[2]
         local from = streamtbl[3]
+
         if IsValid( station ) and IsValid( ent ) and IsValid( from ) then
             if streamtbl[6] then
                 local distance = LocalPlayer():GetPos():Distance( ent:GetPos() )
