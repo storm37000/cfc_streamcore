@@ -26,6 +26,7 @@ local urlFixes = {}
 local throttleConfig = {
     delays = { -- In seconds, minimum delay between uses
         default = 0.1,
+        streamStart = 4,
         streamRadius = 0.25,
         streamVolume = 0.25,
         streamStop = 0.25
@@ -60,9 +61,8 @@ local function isThrottled( chip, funcName )
     if not lastUse then throttles[funcName] = 0 end
 
     local delay = throttleConfig.delays[funcName] or throttleConfig.delays.default
-    if CurTime() < lastUse + delay then return true end
 
-    return false
+    return CurTime() < lastUse + delay
 end
 
 local function fixURL( url )
@@ -119,8 +119,8 @@ local function streamStart( chip, target, id, volume, url, no3d )
     antispam[owner:EntIndex()] = CurTime() + secs
 
     local index = chip:EntIndex() .. "-" .. id
-    local url = fixURL( url ) or "nope"
-    if url == "nope" then return end
+    local url = fixURL( url )
+    if not url then return end
 
     local radius = GetConVarNumber( "streamcore_maxradius" )
     if radius > 120 then radius = 120 end
