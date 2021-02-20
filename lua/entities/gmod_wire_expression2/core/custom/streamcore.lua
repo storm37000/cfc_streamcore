@@ -17,7 +17,7 @@ local clamp = math.Clamp
 
 local stringLen = string.len
 local stringSub = string.sub
-local stringTrim = string.Trimp
+local stringTrim = string.Trim
 
 local streams = {}
 local antispam = {}
@@ -36,7 +36,10 @@ local function setLastUse( chip, funcName )
     local ent = chip.entity
 
     local throttles = ent.streamcoreThrottle
-    if not throttles then ent.streamcoreThrottle = {} end
+    if not throttles then
+        throttles = {}
+        ent.streamcoreThrottle = throttles
+    end
 
     throttles[funcName] = CurTime()
 end
@@ -49,7 +52,8 @@ local function isThrottled( chip, funcName )
 
     local throttles = ent.streamcoreThrottle
     if not throttles then
-        ent.streamcoreThrottle = {}
+        throttles = {}
+        ent.streamcoreThrottle = throttles
     end
 
     local lastUse = throttles[funcName]
@@ -221,7 +225,7 @@ e2function void streamVolume( id, volume )
         net.WriteFloat( volume )
     net.Broadcast()
 
-    setLastUse(self, "streamVolume")
+    setLastUse( self, "streamVolume" )
 end
 
 _e2setcost( 50 )
@@ -243,5 +247,5 @@ e2function void streamRadius( id, radius )
         net.WriteFloat( radius )
     net.Broadcast()
 
-    setLastUse(self, "streamRadius")
+    setLastUse( self, "streamRadius" )
 end
