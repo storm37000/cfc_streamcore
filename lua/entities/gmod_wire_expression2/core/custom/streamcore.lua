@@ -139,7 +139,7 @@ local function streamStart( chip, target, id, volume, url, no3d )
         net.WriteFloat( radius )
     net.Broadcast()
 
-    setLastUse( self, "streamStart" )
+    setLastUse( chip, "streamStart" )
 end
 
 __e2setcost( 1 )
