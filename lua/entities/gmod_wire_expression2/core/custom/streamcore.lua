@@ -58,7 +58,10 @@ local function isThrottled( chip, funcName )
     end
 
     local lastUse = throttles[funcName]
-    if not lastUse then throttles[funcName] = 0 end
+    if not lastUse then
+        lastUse = 0
+        throttles[funcName] = 0
+    end
 
     local delay = throttleConfig.delays[funcName] or throttleConfig.delays.default
 
