@@ -104,8 +104,6 @@ local function streamStart( chip, target, id, volume, url, no3d )
     if not IsValid( chip ) then return end
     if not IsValid( target ) then return end
 
-    if isThrottled( chip, "streamStart" ) then return end
-
     if not E2Lib.isOwner( chip, target ) then return end
 
     local owner = E2Lib.getOwner( chip, target )
@@ -138,8 +136,6 @@ local function streamStart( chip, target, id, volume, url, no3d )
         net.WriteBool( no3d )
         net.WriteFloat( radius )
     net.Broadcast()
-
-    setLastUse( chip, "streamStart" )
 end
 
 __e2setcost( 1 )
@@ -169,17 +165,29 @@ end
 
 __e2setcost( 50 )
 e2function void entity:streamStart( id, volume, string url )
+    if isThrottled( self, "streamStart" ) then return end
+
     streamStart( self.entity, this, id, volume, url, self.data.no3d )
+
+    setLastUse( self, "streamStart" )
 end
 
 __e2setcost( 50 )
 e2function void entity:streamStart( id, string url, volume )
+    if isThrottled( self, "streamStart" ) then return end
+
     streamStart( self.entity, this, id, volume, url, self.data.no3d )
+
+    setLastUse( self, "streamStart" )
 end
 
 __e2setcost( 50 )
 e2function void entity:streamStart( id, string url )
+    if isThrottled( self, "streamStart" ) then return end
+
     streamStart( self.entity, this, id, 1, url, self.data.no3d )
+
+    setLastUse( self, "streamStart" )
 end
 
 __e2setcost( 10 )
