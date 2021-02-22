@@ -104,7 +104,7 @@ local function streamStart( chip, target, id, volume, url, no3d )
     if not IsValid( chip ) then return end
     if not IsValid( target ) then return end
 
-    if isThrottled( self, "streamStart" ) then return end
+    if isThrottled( chip, "streamStart" ) then return end
 
     if not E2Lib.isOwner( chip, target ) then return end
 
