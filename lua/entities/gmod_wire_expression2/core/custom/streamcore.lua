@@ -228,7 +228,7 @@ e2function void streamVolume( id, volume )
     setLastUse( self, "streamVolume" )
 end
 
-_e2setcost( 50 )
+__e2setcost( 50 )
 e2function void streamRadius( id, radius )
     if isThrottled( self, "streamRadius" ) then return end
 
