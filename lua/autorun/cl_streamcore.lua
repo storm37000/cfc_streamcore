@@ -107,7 +107,7 @@ net.Receive( "CFC_SC_StreamRadius", function( len )
     streams[index][8] = radius
 end )
 
-timer.Create( "CFC_SC_Think", 1, 0, function()
+timer.Create( "CFC_SC_Think", 0.25, 0, function()
     for index, streamtbl in pairs( streams ) do
         local station = streamtbl[1]
         local ent = streamtbl[2]
