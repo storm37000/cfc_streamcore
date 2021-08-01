@@ -10,7 +10,11 @@ end )
 
 hook.Add( "PopulateToolMenu", "CFC_Streamcore_PopulateToolMenu", function()
     spawnmenu.AddToolMenuOption( "Options", "CFC", "cfc_streamcore", "#Streamcore", "", "", function( panel )
-        panel:CheckBox( "Disable streamcore", "streamcore_disable" )
+        local checkbox = panel:CheckBox( "Disable streamcore", "streamcore_disable" )
+        function checkbox:OnChange( val )
+            if not val then return end
+            LocalPlayer():ConCommand( "streamcore_purge" )
+        end
     end )
 end )
 
