@@ -8,16 +8,6 @@ hook.Add( "AddToolMenuCategories", "CFC_Streamcore_AddToolMenuCategories", funct
     spawnmenu.AddToolCategory( "Options", "CFC", "#CFC" )
 end )
 
-hook.Add( "PopulateToolMenu", "CFC_Streamcore_PopulateToolMenu", function()
-    spawnmenu.AddToolMenuOption( "Options", "CFC", "cfc_streamcore", "#Streamcore", "", "", function( panel )
-        local checkbox = panel:CheckBox( "Disable streamcore", "streamcore_disable" )
-        function checkbox:OnChange( val )
-            if not val then return end
-            LocalPlayer():ConCommand( "streamcore_purge" )
-        end
-    end )
-end )
-
 local function streamStop( index )
     local streamtbl = streams[index] or {}
     local canStop = IsValid( streamtbl[1] )
@@ -27,6 +17,18 @@ local function streamStop( index )
     streams[index] = nil
     return canStop
 end
+
+hook.Add( "PopulateToolMenu", "CFC_Streamcore_PopulateToolMenu", function()
+    spawnmenu.AddToolMenuOption( "Options", "CFC", "cfc_streamcore", "#Streamcore", "", "", function( panel )
+        local checkbox = panel:CheckBox( "Disable streamcore", "streamcore_disable" )
+        function checkbox:OnChange( val )
+            if not val then return end
+            for index in pairs( streams ) do
+                streamStop( index )
+            end
+        end
+    end )
+end )
 
 concommand.Add( "streamcore_list", function()
     print( "[StreamCore] ############### Active streamings ###############" )
