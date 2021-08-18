@@ -112,6 +112,9 @@ local function streamStart( chip, target, id, volume, url, no3d )
 
 	if not playerCanStartStream( owner ) then return end
 
+	local canRun = hook.Run( "StreamCore_PreStreamStart", chip, owner, url, id, volume, no3d )
+    if canRun == false then return end
+
 	local secs = GetConVarNumber( "streamcore_antispam_seconds" )
 	antispam[owner:EntIndex()] = CurTime() + secs
 
